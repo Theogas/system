@@ -11,7 +11,6 @@
         </el-form-item>
         <el-form-item style="margin: 10px 0; text-align: right">
           <el-button type="primary" size="small"  autocomplete="off" @click="login">登录</el-button>
-          <el-button type="warning" size="small"  autocomplete="off">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -41,14 +40,14 @@ export default {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {  // 表单校验合法
           this.request.post("/user/login", this.user).then(res => {
-            if(!res) {
-              this.$message.error("用户名或密码错误")
-            } else {
+            if(res.code === 1) {
+              localStorage.setItem("user",JSON.stringify(res.data))
+              this.$message.success("登录成功")
               this.$router.push("/")
+            } else {
+              this.$message.error(res.msg)
             }
           })
-        } else {
-          return false;
         }
       });
     }
