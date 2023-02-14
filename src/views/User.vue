@@ -100,17 +100,17 @@ export default {
     this.load()
   },
   methods: {
-    load(){
-      request.get("/user/page",{
-        params:{
+    load() {
+      request.get("/user/page", {
+        params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           username: this.username
         }
-      }).then(res =>{
+      }).then(res => {
 
-        this.tableData=res.records
-        this.total=res.total
+        this.tableData = res.records
+        this.total = res.total
       })
     },
 
@@ -124,53 +124,51 @@ export default {
       this.pageNum = pageNum
       this.load()
     },
-    reset(){
-      this.username=""
+    reset() {
+      this.username = ""
       this.load()
     },
-    save(){
-      console.log(this.form)
-      request.post("/user",this.form).then(res =>{
-        if(res){
+    save() {
+      this.request.post("/user", this.form).then(res => {
+        if (res.code === 1) {
           this.$message.success("保存成功")
-          this.dialogFormVisible=false
-        }else {
+          this.dialogFormVisible = false
+        } else {
           this.$message.error("保存失败")
         }
       })
       this.load()
     },
-    handleAdd(){
-      this.dialogFormVisible=true
-      this.form={}
+    handleAdd() {
+      this.dialogFormVisible = true
+      this.form = {}
     },
-    handleEdit(row){
-      this.form={...row}
-      this.dialog1FormVisible=true
+    handleEdit(row) {
+      this.form = {...row}
+      this.dialog1FormVisible = true
     },
-    edit(){
-      console.log(this.form)
-      request.put("/user",this.form).then(res=>{
-        if(res) {
-          this.$message.success("修改成功")
-        }else {
-          this.$message.error("修改失败")
+    edit() {
+      this.request.put("/user", this.form).then(res => {
+        if (res.code === 1) {
+          this.$message.success("保存成功")
+          this.dialog1FormVisible = false
+        } else {
+          this.$message.error("保存失败");
         }
       })
       this.load()
     },
-    handleDelete(id){
-      request.delete("/user/"+id).then(res=>{
-        if(res){
+    handleDelete(id) {
+      this.request.delete("/user/" + id).then(res => {
+        if (res.code === 1) {
           this.$message.success("删除成功")
-        }else {
+        } else {
           this.$message.error("删除失败")
         }
       })
       this.load()
     }
-  }
-}
+  }}
 </script>
 
 <style scoped>
