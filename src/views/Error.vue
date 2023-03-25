@@ -11,14 +11,7 @@
       <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  >
         <el-table-column label="ID" prop="id"></el-table-column>
         <el-table-column label="日志名称" prop="name"></el-table-column>
-        <el-table-column label="创建时间" prop="createTime"></el-table-column>
-        <el-table-column label="日志条数" prop="logCount"></el-table-column>
-        <el-table-column label="错误条数" prop="errorCount"></el-table-column>
-        <el-table-column label="下载" align="center">
-          <template slot-scope="scope">
-            <el-button type="primary" @click="download(scope.row.url)">下载</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column label="日志内容" prop="message"></el-table-column>
       </el-table>
     </div>
 
@@ -38,28 +31,26 @@
 
 <script>
 export default {
-  name: "LogAnalysis",
+  name: "Error",
   data(){
-    return {
+    return{
+      tableData: [],
       pageSize: 2,
       pageNum: 1,
-      tableData: [],
       total: 0,
       name: '',
     }
   },
-
   created() {
     this.load()
   },
-
   methods: {
-    load(){
-      this.request.get("/analysis/page",{
+    load() {
+      this.request.get("/error/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-      }
+        }
       }).then(res => {
         this.tableData = res.data.records
         this.total = res.data.total
@@ -76,10 +67,6 @@ export default {
       console.log(pageNum)
       this.pageNum = pageNum
       this.load()
-    },
-
-    download(url) {
-      window.open("http://localhost:8080/analysis/download/" + url)
     },
 
     reset() {

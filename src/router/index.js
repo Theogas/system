@@ -20,6 +20,8 @@ const routes = [
         {path: '/home', name: '首页', component: () => import('../views/Home.vue')},
         {path: '/person', name: '个人信息',component: () => import('../views/Person.vue')},
         {path: '/log',name: '日志管理',component: () => import('../views/Log.vue')},
+        {path: '/analysis',name: '日志分析',component: () => import('../views/LogAnalysis.vue')},
+        {path: '/error',name: '错误日志',component: () => import('../views/Error.vue')},
     ]
   },
   {

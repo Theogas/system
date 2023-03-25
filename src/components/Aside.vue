@@ -26,9 +26,25 @@
         <i class="el-icon-s-custom"></i>
         <span slot="title">用户管理</span>
       </el-menu-item>
+
+    </el-submenu>
+
+    <el-submenu>
+      <template slot="title">
+        <i class="el-icon-menu"></i>
+        <span slot="title">日志相关管理</span>
+      </template>
       <el-menu-item index="/log">
         <i class="el-icon-s-custom"></i>
         <span slot="title">日志管理</span>
+      </el-menu-item>
+      <el-menu-item index="/analysis">
+        <i class="el-icon-s-custom"></i>
+        <span slot="title">日志分析记录</span>
+      </el-menu-item>
+      <el-menu-item index="/error">
+        <i class="el-icon-s-custom"></i>
+        <span slot="title">日志错误记录</span>
       </el-menu-item>
     </el-submenu>
   </el-menu>
