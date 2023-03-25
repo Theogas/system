@@ -7,13 +7,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'login',
+    component: () => import('../views/Login.vue')
+  },
+
+  {
+    path: '/home',
     redirect: '/home',
     component: () => import('../views/Manage.vue'),
     children: [
-        {path: 'user', name: '用户管理', component: () => import('../views/User.vue')},
-        {path: 'home', name: '首页', component: () => import('../views/Home.vue')},
-        {path: 'person', name: '个人信息',component: () => import('../views/Person.vue')},
-        {path: 'log',name: '日志管理',component: () => import('../views/Log.vue')},
+        {path: '/user', name: '用户管理', component: () => import('../views/User.vue')},
+        {path: '/home', name: '首页', component: () => import('../views/Home.vue')},
+        {path: '/person', name: '个人信息',component: () => import('../views/Person.vue')},
+        {path: '/log',name: '日志管理',component: () => import('../views/Log.vue')},
     ]
   },
   {
@@ -24,11 +30,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/Login.vue')
-  }
+
 ]
 
 

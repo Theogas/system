@@ -19,7 +19,16 @@
       <el-table-column label="文件名称" prop="name"></el-table-column>
       <el-table-column label="文件大小(kb)" prop="size"></el-table-column>
       <el-table-column label="上传时间" prop="uploadTime"></el-table-column>
-      <el-table-column label="下载"></el-table-column>
+      <el-table-column label="下载" align="center">
+        <template slot-scope="scope">
+          <el-button type="primary" @click="download(scope.row.url)">下载</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="分析"  width="200" align="center">
+        <template slot-scope="scope">
+          <el-button type="primary" @click="analyse(scope.row)">分析</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="操作"  width="200" align="center">
         <template slot-scope="scope">
           <el-popconfirm
@@ -57,51 +66,81 @@ user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{}
 let token=user.token
 export default {
   name: "log",
-  data(){
-    return{
+  data() {
+    return {
       tableData: [],
       pageSize: 2,
       pageNum: 1,
       total: 0,
-      headers: {token: token}
+      headers: {token: token},
+      name: '',
+      form: {},
     }
   },
-  created(){
+  created() {
     this.load()
   },
   methods: {
-    load(){
+    load() {
       this.request.get("/log/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-        }}).then(res=> {
+        }
+      }).then(res => {
         this.tableData = res.data.records
         this.total = res.data.total
       })
     },
-    handleFileUploadSuccess(){
+
+    handleFileUploadSuccess() {
     },
+
     handleSizeChange(pageSize) {
       console.log(pageSize)
       this.pageSize = pageSize
       this.load()
     },
+
     handleCurrentChange(pageNum) {
       console.log(pageNum)
       this.pageNum = pageNum
       this.load()
     },
-    del(id){
-      this.request.delete("/log/"+id).then(res => {
+
+    del(id) {
+      this.request.delete("/log/" + id).then(res => {
         if (res.code === 1) {
           this.$message.success("删除成功")
+          this.load()
         } else {
           this.$message.error("删除失败")
         }
       })
+    },
+
+    reset() {
+      this.name = ''
       this.load()
-    }
+    },
+
+    download(url) {
+      window.open("http://localhost:8080/log/download/" + url)
+    },
+
+    analyse(row) {
+      this.form = row
+      this.request.post("/log/analyse", this.form).then(res => {
+        if (res.code === 1) {
+          this.$message.success("保存成功")
+          this.dialogFormVisible = false
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+
+
   }
 }
 </script>
