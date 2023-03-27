@@ -88,8 +88,12 @@ export default {
           pageSize: this.pageSize,
         }
       }).then(res => {
+        if (res.code === 1) {
         this.tableData = res.data.records
         this.total = res.data.total
+      }else {
+          this.$message.error(res.msg)
+        }
       })
     },
 
@@ -127,6 +131,7 @@ export default {
     download(url) {
       window.open("http://localhost:8080/log/download/" + url)
     },
+
 
     analyse(row) {
       this.form = row

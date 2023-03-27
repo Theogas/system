@@ -108,9 +108,12 @@ export default {
           username: this.username
         }
       }).then(res => {
-
-        this.tableData = res.records
-        this.total = res.total
+        if(res.code === 1) {
+          this.tableData = res.records
+          this.total = res.total
+        }else {
+          this.$message.error("查询失败")
+        }
       })
     },
 
