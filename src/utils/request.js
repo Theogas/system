@@ -15,7 +15,8 @@ request.interceptors.request.use(config => {
     let user;
     user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{}
     if(user){
-        config.headers['token'] = user.token;  // 设置请求头
+        config.headers['token'] = user.token;
+        // 设置请求头
     }
     return config
 }, error => {
@@ -39,7 +40,6 @@ request.interceptors.response.use(
             ElementUI.Message({
                 message: '未经授权的访问',
                 type:   'error'
-
             });
         }
         return res;

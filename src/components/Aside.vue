@@ -29,7 +29,7 @@
 
     </el-submenu>
 
-    <el-submenu>
+    <el-submenu index="3">
       <template slot="title">
         <i class="el-icon-menu"></i>
         <span slot="title">日志相关管理</span>
@@ -47,6 +47,27 @@
         <span slot="title">日志错误记录</span>
       </el-menu-item>
     </el-submenu>
+
+      <el-submenu>
+          <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span slot="title">规则相关管理</span>
+          </template>
+          <el-menu-item index="/rule">
+              <i class="el-icon-s-custom"></i>
+              <span slot="title">规则管理</span>
+          </el-menu-item>
+      </el-submenu>
+      <el-submenu>
+          <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span slot="title">服务器相关管理</span>
+          </template>
+          <el-menu-item index="/server">
+              <i class="el-icon-s-custom"></i>
+              <span slot="title">服务器管理</span>
+          </el-menu-item>
+      </el-submenu>
   </el-menu>
 </template>
 

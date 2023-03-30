@@ -101,18 +101,17 @@ export default {
   },
   methods: {
     load() {
-      request.get("/user/page", {
+      this.request.get("/user/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          username: this.username
         }
       }).then(res => {
         if(res.code === 1) {
-          this.tableData = res.records
-          this.total = res.total
+          this.tableData = res.data.records
+          this.total = res.data.total
         }else {
-          this.$message.error("查询失败")
+          this.$message.error(res.msg)
         }
       })
     },

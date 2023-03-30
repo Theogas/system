@@ -22,6 +22,8 @@ const routes = [
         {path: '/log',name: '日志管理',component: () => import('../views/Log.vue')},
         {path: '/analysis',name: '日志分析',component: () => import('../views/LogAnalysis.vue')},
         {path: '/error',name: '错误日志',component: () => import('../views/Error.vue')},
+        {path: '/rule',name: '规则管理',component: () => import('../views/Rule.vue')},
+        {path: '/server',name: '服务器管理',component: () => import('../views/Server.vue')},
     ]
   },
   {
@@ -47,5 +49,22 @@ router.beforeEach((to, from, next) => {
   store.commit("setPath")  // 触发store的数据更新
   next()  // 放行路由
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.path.startsWith('/Login/Login')) {
+        window.sessionStorage.removeItem('Token')
+        next()
+    } else {
+        let user = window.sessionStorage.getItem('Token')
+        if (!user) {
+            next({
+                path: '/Login/Login'
+            })
+        } else {
+            next()
+        }
+    }
+});
+
 
 export default router

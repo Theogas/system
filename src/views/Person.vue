@@ -8,7 +8,7 @@
         <el-input v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="save"></el-button>
+        <el-button @click="save" type="primary" >保存</el-button>
       </el-form-item>
     </el-form>
 
