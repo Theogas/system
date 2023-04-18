@@ -29,11 +29,11 @@ export default {
   },
   methods :{
     save() {
-      this.request.post("/user",this.form).then(res =>{
+      this.request.put("/user",this.form).then(res =>{
         if(res.code===1){
           this.$message.success("保存成功")
         }else {
-          this.$message.error("保存失败")
+          this.$message.error(res.msg)
         }
       })
     },

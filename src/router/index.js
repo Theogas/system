@@ -15,6 +15,9 @@ const routes = [
     path: '/home',
     redirect: '/home',
     component: () => import('../views/Manage.vue'),
+      meta: {
+          requireAuth: true,
+      },
     children: [
         {path: '/user', name: '用户管理', component: () => import('../views/User.vue')},
         {path: '/home', name: '首页', component: () => import('../views/Home.vue')},
@@ -45,26 +48,27 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  localStorage.setItem("currentPathName", to.name)  // 设置当前的路由名称，为了在Header组件中去使用
-  store.commit("setPath")  // 触发store的数据更新
-  next()  // 放行路由
-})
-
-router.beforeEach((to, from, next) => {
-    if (to.path.startsWith('/Login/Login')) {
-        window.sessionStorage.removeItem('Token')
-        next()
-    } else {
-        let user = window.sessionStorage.getItem('Token')
-        if (!user) {
+    localStorage.setItem("currentPathName", to.name)  // 设置当前的路由名称，为了在Header组件中去使用
+    store.commit("setPath")  // 触发store的数据更新
+    if (to.matched.some((r) => r.meta.requireAuth)) {
+        //这里判断用户是否登录，验证本地存储是否有token
+        if (!localStorage.getItem("user")) { // 判断当前的token是否存在
+            console.log("未登录")
             next({
-                path: '/Login/Login'
+                path: '/',
+                query: { redirect: to.fullPath }
             })
         } else {
             next()
         }
+    } else {
+        next() // 确保一定要调用 next()
     }
-});
+})
+
+
+
+
 
 
 export default router

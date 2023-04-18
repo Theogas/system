@@ -48,7 +48,7 @@
       </el-menu-item>
     </el-submenu>
 
-      <el-submenu>
+      <el-submenu index="4">
           <template slot="title">
               <i class="el-icon-menu"></i>
               <span slot="title">规则相关管理</span>
@@ -58,7 +58,7 @@
               <span slot="title">规则管理</span>
           </el-menu-item>
       </el-submenu>
-      <el-submenu>
+      <el-submenu index="5">
           <template slot="title">
               <i class="el-icon-menu"></i>
               <span slot="title">服务器相关管理</span>
