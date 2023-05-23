@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import request from "@/utils/request";
 
 export default {
   name: "User",
@@ -170,6 +169,7 @@ export default {
       })
       this.load()
     },
+
     search() {
         this.request.get("/user/search", {
             params: {

@@ -95,6 +95,7 @@ export default {
             form: {},
             dialogFormVisible: false,
             dialog1FormVisible: false,
+            name: '',
         }
     },
     created() {
@@ -170,7 +171,30 @@ export default {
                 }
             })
             this.load()
+        },
+
+        reset(){
+            this.name=  ''
+        },
+
+        search(){
+            this.request.get("/rule/search",{
+                params:{
+                    pageNum: this.pageNum,
+                    pageSize: this.pageSize,
+                    name: this.name
+                }
+            }).then(res =>{
+                if(res.code === 1) {
+                    this.tableData = res.data.records
+                    this.total = res.data.total
+                }else {
+                    this.$message.error(res.msg)
+                }
+            })
         }
+
+
     }
 }
 </script>

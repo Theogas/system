@@ -2,7 +2,7 @@
   <div>
 
       <div style="margin: 10px 0">
-          <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="username"></el-input>
+          <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
           <el-button class="ml-5" type="primary" @click="search">搜索</el-button>
           <el-button class="ml-5" type="warning" @click="reset">重置</el-button>
       </div>
@@ -16,10 +16,10 @@
               <el-table-column prop="id" label="ID" width="140"></el-table-column>
               <el-table-column prop="name" label="用户名" width="120"></el-table-column>
               <el-table-column prop="host" label="IP地址"></el-table-column>
-              <el-table-column prop="cpuUse" laber="cpu占用"></el-table-column>
-              <el-talble-column prop="ramUse" laber="交换空间使用"></el-talble-column>
-              <el-talble-column prop="swapUse" laber="内存使用"></el-talble-column>
-              <el-talble-column prop="diskUse" label="硬盘使用"></el-talble-column>
+              <el-table-column prop="cpuUse" label="cpu占用(%)"></el-table-column>
+              <el-table-column prop="ramUse" label="交换空间使用(G)"></el-table-column>
+              <el-table-column prop="swapUse" label="内存使用(G)"></el-table-column>
+              <el-table-column prop="diskUse" label="硬盘使用(G)"></el-table-column>
               <el-table-column label="操作"  width="200" align="center">
                   <template slot-scope="scope">
                       <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
@@ -109,7 +109,7 @@ export default {
             pageSize: 2,
             dialogFormVisible: false,
             dialog1FormVisible: false,
-            username: '',
+            name: '',
             form: {},
         }
     },
@@ -186,7 +186,29 @@ export default {
                 }
             })
             this.load()
+        },
+
+        reset(){
+            this.name=''
+        },
+
+        search(){
+            this.request.get("/server/search", {
+                params: {
+                    pageNum: this.pageNum,
+                    pageSize: this.pageSize,
+                    name: this.name
+                }
+            }).then(res => {
+                if(res.code === 1) {
+                    this.tableData = res.data.records
+                    this.total = res.data.total
+                }else {
+                    this.$message.error(res.msg)
+                }
+            })
         }
+
     }
 }
 </script>

@@ -3,7 +3,7 @@
 
         <div style="margin: 10px 0">
             <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
-            <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
+            <el-button class="ml-5" type="primary" @click="search">搜索</el-button>
             <el-button type="warning" @click="reset">重置</el-button>
         </div>
 
@@ -15,10 +15,9 @@
                 <el-select v-model="value" placeholder="请选择解析规则" style="margin-left: 980px">
                     <el-option
                         v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                        :disabled="item.disabled">
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
                     </el-option>
                 </el-select>
         </div>
@@ -85,11 +84,16 @@ export default {
             headers: {token: token},
             name: '',
             form: {},
+            options: [{
+                value: '选项1',
+                label: '黄金糕'
+            }],
+            value: ''
         }
     },
     created() {
         this.load()
-        this.del(1)
+        this.getRules()
     },
     methods: {
         load() {
@@ -145,18 +149,52 @@ export default {
 
 
         analyse(row) {
+            console.log(row.id)
+            console.log(this.value)
             this.form = row
-            this.request.post("/log/analyse", this.form).then(res => {
+            this.request.get("/log/analyse", {
+                params:{
+                    logId: row.id,
+                    ruleId: this.value
+                }
+            }).then(res => {
                 if (res.code === 1) {
                     this.$message.success("保存成功")
-                    this.dialogFormVisible = false
                 } else {
                     this.$message.error(res.msg)
                 }
             })
         },
 
+        getRules(){
+            console.log(1)
+            this.request.get("/rule").then(res =>{
+                if(res.code === 1){
+                    console.log(res.data)
+                    this.options=res.data
+                    console.log(this.options)
+                }else {
+                    this.$message.error(res.msg)
+                }
+            })
+        },
 
+        search() {
+            this.request.get("/log/search", {
+                params: {
+                    pageNum: this.pageNum,
+                    pageSize: this.pageSize,
+                    name: this.name,
+                }
+            }).then(res => {
+                if(res.code === 1) {
+                    this.tableData = res.data.records
+                    this.total = res.data.total
+                }else {
+                    this.$message.error(res.msg)
+                }
+            })
+        }
     }
 }
 </script>
